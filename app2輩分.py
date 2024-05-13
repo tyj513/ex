@@ -559,7 +559,7 @@ def audio_feed():
 
 @app.route("/")
 def index():
-    return render_template("run.html")
+    return render_template("https://tyj513.github.io/ex/run.html")
 
 
 if __name__ == "__main__":
