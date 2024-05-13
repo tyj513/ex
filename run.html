@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        @font-face {
+            font-family: 'digital-clock-font';
+            src: url('digital-7.ttf')format('truetype');
+        }
+    </style>
+    <title>一起來做肢體偵測吧
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #counter {
+            font-size: 200px;
+            color: #ffffff;
+            transition: transform 0.5s ease-out;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            scale: (1.2);
+
+        }
+
+        body {
+            background-image: url('https://github.com/tyj513/audio/raw/main/background.gif');
+
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .info {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+            font-size: 70px;
+        }
+
+
+
+        .infoRED {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+            color: rgb(254, 11, 11);
+            font-size: 70px;
+            /* Set your desired font size */
+        }
+
+        .infoBLUE {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+            color: blue;
+            font-size: 70px;
+            /* Set your desired font size */
+        }
+
+        button {
+            font-size: 20px;
+        }
+
+        #startAction,
+        #result {
+            font-size: 32px;
+            width: 150px;
+            height: 70px;
+        }
+
+        h1 {
+            font-size: 75px;
+            color: rgb(255, 255, 255);
+            -webkit-text-stroke: 1px rgb(0, 0, 0);
+            text-shadow: 2px 2px 4px #7d2727;
+            margin: 20px 0 0 0;
+
+        }
+    </style>
+    <style>
+        #duration {
+            border: 0.5px solid #1A52FF;
+            font-size: 22px;
+            /* 绿色边框 */
+            padding: 0px;
+            margin: 20px auto;
+            width: 2500px;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
+    <style>
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .center2 {
+            position: absolute;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #counter,
+        #videoContainer {
+            position: absolute;
+        }
+    </style>
+    <style>
+        .center2 {
+            position: relative;
+            height: 80vh;
+            /* 可能需要调整高度以适应内容 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #counter {
+            position: absolute;
+            top: 10%;
+            /* 从顶部开始的位置 */
+            left: 50%;
+            /* 水平居中 */
+            transform: translateX(-50%);
+            /* 确保水平居中 */
+        }
+
+        #videoContainer {
+            position: absolute;
+            top: 50%;
+            /* 设置一个更低的位置 */
+            left: 50%;
+            /* 水平居中 */
+            transform: translate(-50%, -50%);
+            /* 确保水平和垂直居中 */
+        }
+    </style>
+    <style>
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            background-color: var(--background-color);
+            font-family: "Oswald", sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-color);
+        }
+
+        #remain_text {
+
+            color: #ffffff;
+            font-size: 50px;
+            transition: transform 0.5s ease-out;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+            /* Black outline */
+            transition: transform 0.5s ease-out;
+            animation: pulse 1s infinite;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+    <div class="center-container">
+        <h1>LET'S WORK</h1>
+
+    </div>
+    <section class="wrapper">
+        <div id="remain_text" style="display: none;"> </div>
+    </section>
+
+    </div>
+    <div class="center2">
+        <div id="counter"></div>
+
+        <div id="videoContainer"> </div>
+
+    </div>
+    <div class="center-container">
+        <button id="startAction">開始動作</button>&nbsp;&nbsp;&nbsp;
+        <button id="result">顯示結果</button>
+        <!--  style="display: none;"-->
+
+    </div>
+
+
+    <div id="duration" style="display: none;"></div>
+
+    <div class=" center-container">
+
+    </div>
+    <script>
+        document.getElementById('startAction').addEventListener('click', function () {
+
+            if (interval === null) {
+                setTimeout(() => {
+
+                    currentNumber = 5; // 设置倒计时开始的数字
+                    document.getElementById('counter').innerText = currentNumber;
+                    interval = setInterval(updateCounter, 1000);
+                }, 1074);
+            }
+
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = '<img src="{{ url_for("video_feed") }}" width="2500" height="1300">';
+
+
+        });
+
+        document.getElementById('loadDuration').addEventListener('click', function () {
+            fetch('{{ url_for("duration") }}')
+                .then(response => response.json())
+                .then(data => {
+                    const durationDiv = document.getElementById('duration');
+                    durationDiv.innerHTML = ''; // Clear previous content
+                    Object.keys(data).forEach(key => {
+                        durationDiv.innerHTML += `${key}: ${data[key]}`;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function fetchRemainingTime() {
+                $.getJSON('/remaining_time', function (data) {
+                    if ([9, 10].includes(data.remaining_time)) {
+                        $('#remain_text').text('加油還有10秒!');
+                    }
+
+                    else {
+                        $('#remain_text').text(data.remaining_time + ' seconds');
+                    }
+                });
+            }
+            setInterval(fetchRemainingTime, 1000); // 每秒更新一次
+        });
+
+
+        document.getElementById('result').addEventListener('click', function () {
+            index = 0
+            $.getJSON('/duration', function (data) {
+                var displayText = '';
+                $.each(data, function (key, value) {
+                    // Check if the key matches the ones you want to color red
+                    var colorClass = '';
+                    if (key === 'Bridge pose' || key === 'Downward Facing Dog' || key === 'T Pose' || key === 'Tree Pose') {
+                        colorClass = 'RED'; // Assuming you have a CSS class named 'red' for red color
+                    }
+                    if (key === 'left punches' || key === 'right punches' || key === 'punching') {
+                        colorClass = 'BLUE'; // Assuming you have a CSS class named 'red' for red color
+                    }
+                    if (key === 'left punches' || key === 'right punches') {
+                        times = '次'; // Assuming you have a CSS class named 'red' for red color
+                    }
+                    else
+                        times = '秒';
+
+                    // Modify the displayText to include the span with the appropriate class
+                    displayText += `<span class="info${colorClass}">${key}: ${value}${times}</span>`;
+                    if ((index + 1) % 4 === 0 && index + 1 !== 8) {
+                        displayText += '<br/>';
+                    }
+                    if (index === 6) {
+                        displayText += '<br/>';
+                    }
+                    index++;
+                });
+
+                $('#duration').html(displayText);
+                $('#duration').show();
+            });
+        });
+
+
+
+
+    </script>
+
+    <!--倒數器 -->
+    <script>
+        let currentNumber = null;
+        let interval = null;
+
+        function updateCounter() {
+            const counterElement = document.getElementById('counter');
+            counterElement.style.color = 'white'; // 设置字体颜色为白色
+
+            if (currentNumber !== null) {
+                if (currentNumber > 1) {
+                    currentNumber -= 1;
+                    counterElement.innerText = currentNumber;
+                    counterElement.style.transform = 'scale(1.2)'; // 放大效果
+                    setTimeout(() => {
+                        counterElement.style.transform = 'scale(1)'; // 恢复原大小
+                    }, 500); // 等待0.5秒后恢复原大小
+                } else {
+                    clearInterval(interval);
+                    counterElement.innerText = ''; // 倒计时结束时清空计时器显示
+                    currentNumber = null; // 重置 currentNumber 为 null，以便再次触发倒计时
+                    document.getElementById('remain_text').style.display = 'block';
+                }
+            }
+        }
+
+    </script>
+
+
+
+
+</body>
+
+</html>
